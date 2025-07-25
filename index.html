@@ -26,12 +26,112 @@
     <!-- Text Content -->
     <h2 class="text-4xl font-bold mb-4">Hello, I’m Bit.</h2>
     <p class="text-lg mb-6">A friendly character greeting visitors to the site.</p>
-
-    <!-- Call-to-action Button -->
-    <button class="px-6 py-3 border-2 border-black rounded-lg text-lg font-semibold hover:bg-black hover:text-white transition">
-      Get Started
-    </button>
   </main>
+
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 20px auto; }
+    #thread { list-style: none; padding: 0;}
+    #thread li { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px;}
+    .user { font-weight: bold; color: #31708f; }
+    .ai { color: #0b8343; }
+    #keyPrompt { position: fixed; left: 0; top: 0; width:100vw; height:100vh; backdrop-filter: blur(2px); background: rgba(255,255,255,0.95); display: flex; justify-content: center; align-items: center; z-index: 100; }
+    #keyPromptBox { box-shadow: 0 2px 14px #ccc; padding: 2em; background: #fff; border-radius: 8px;}
+  </style>
+</head>
+<body>
+  <h1>Chat with DSX (PWA)</h1>
+  <ul id="thread"></ul>
+  <input id="msg" placeholder="Type your message and hit enter" style="width: 80%;" autofocus autocomplete="off"/>
+  <button onclick="send()">Send</button>
+  <div id="keyPrompt">
+    <div id="keyPromptBox">
+      <label for="apiKeyInput">Enter your secret key to use DSX:</label><br>
+      <input type="password" id="apiKeyInput" style="width:60%;" /> 
+      <button onclick="saveKey()">Submit</button>
+      <br><br>
+      <small style="color:#888;">You can refresh to enter a different key.</small>
+    </div>
+  </div>
+  <script>
+    // === PWA Registration ===
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+
+    const API_URL = 'http://YOUR_DROPLET_IP:3000/api';
+    let apiKey = null;
+
+    // Secret key handling
+    function saveKey() {
+      apiKey = document.getElementById("apiKeyInput").value.trim();
+      document.getElementById("keyPrompt").style.display = "none";
+      loadHistory();
+    }
+    // Optionally: Autofocus on secret key dialog
+    document.getElementById('apiKeyInput').focus();
+
+    // Chat/thread logic
+    const threadEl = document.getElementById('thread');
+    const msgEl = document.getElementById('msg');
+    async function send() {
+      const msg = msgEl.value.trim();
+      if (!msg || !apiKey) return;
+      addMessage('You', msg, 'user');
+      msgEl.value = '';
+      try {
+        const res = await fetch(API_URL+'/message', {
+          method: 'POST',
+          headers: {
+            'Content-Type':'application/json',
+            'x-api-key': apiKey
+          },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        if (data.error) {
+          addMessage('Error', data.error, 'ai');
+        } else {
+          addMessage('DSX', data.response || '', 'ai');
+        }
+      } catch (e) {
+        addMessage('Error', 'Could not reach server.', 'ai');
+      }
+    }
+
+    function addMessage(who, text, cls) {
+      const li = document.createElement('li');
+      li.className = cls;
+      li.innerHTML = `<span>${who}:</span> ${text}`;
+      threadEl.appendChild(li);
+      threadEl.scrollTop = threadEl.scrollHeight;
+    }
+
+    msgEl.addEventListener('keypress', e => { if (e.key === 'Enter') send(); });
+
+    // Fetch history after valid key is entered
+    async function loadHistory() {
+      try {
+        const res = await fetch(API_URL+'/history', {
+          headers: {'x-api-key': apiKey}
+        });
+        const hist = await res.json();
+        if (Array.isArray(hist) && hist.length > 0) {
+          threadEl.innerHTML = '';
+          hist.forEach(entry => {
+            if (entry.role && entry.content) {
+              const who = entry.role === 'user' ? 'You' : 'DSX';
+              addMessage(who, entry.content, entry.role === 'user' ? 'user' : 'ai');
+            }
+          });
+        }
+      } catch (e) {
+        threadEl.innerHTML = '';
+        addMessage('Info', "No history found or couldn't load history.", 'ai');
+      }
+    }
+  </script>
+
 
 </body>
 </html>
