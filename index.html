@@ -29,7 +29,9 @@
       overflow: hidden;
       gap: 15px; /* spacing between input and link */
     }
-
+    main {
+      padding-top: env(safe-area-inset-top);
+    }
     @keyframes splashPulse {
       0% {
         background-size: 150% 150%;
@@ -49,7 +51,6 @@
       font-size: 1.7em;
       color: #333;
       letter-spacing: 0.5px;
-      padding-top: env(safe-area-inset-top);
     }
 
     .branding .byte {
@@ -159,7 +160,7 @@
 
       // Call your backend to create a Checkout session
       try {
-        const response = await fetch("http://138.197.90.14:4242/create-checkout-session", {
+        const response = await fetch("https://api.bytetheoretic.com:4242/create-checkout-session", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
