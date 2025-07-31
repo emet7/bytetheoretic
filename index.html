@@ -2,136 +2,182 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bytetheoretic</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-yellow-50 font-sans text-gray-900">
-
-  <!-- Navigation -->
-  <header class="flex justify-between items-center p-6">
-    <h1 class="text-2xl font-bold">Bytetheoretic</h1>
-    <nav class="space-x-6 text-lg">
-      <a href="#" class="hover:underline">Home</a>
-      <a href="#" class="hover:underline">About</a>
-      <a href="#" class="hover:underline">Contact</a>
-    </nav>
-  </header>
-
-  <!-- Main Content -->
-  <main class="flex flex-col items-center text-center px-6 py-10">
-    <!-- Character Image -->
-    <img src="bit-character.png" alt="Bit character" class="w-48 mb-6" />
-
-    <!-- Text Content -->
-    <h2 class="text-4xl font-bold mb-4">Hello, I’m Bit.</h2>
-    <p class="text-lg mb-6">A friendly character greeting visitors to the site.</p>
-  </main>
-
-  <link rel="manifest" href="manifest.json">
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 20px auto; }
-    #thread { list-style: none; padding: 0;}
-    #thread li { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px;}
-    .user { font-weight: bold; color: #31708f; }
-    .ai { color: #0b8343; }
-    #keyPrompt { position: fixed; left: 0; top: 0; width:100vw; height:100vh; backdrop-filter: blur(2px); background: rgba(255,255,255,0.95); display: flex; justify-content: center; align-items: center; z-index: 100; }
-    #keyPromptBox { box-shadow: 0 2px 14px #ccc; padding: 2em; background: #fff; border-radius: 8px;}
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      background: radial-gradient(circle at center, 
+                  rgba(255, 240, 250, 0.9), 
+                  rgba(224, 247, 255, 0.8), 
+                  rgba(255, 255, 255, 0.5),
+                  rgba(255, 255, 255, 0.3));
+      background-size: 250% 250%;
+      animation: splashPulse 6s ease-in-out infinite;
+      display: flex;
+      flex-direction: column; /* stack vertically */
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      gap: 15px; /* spacing between input and link */
+    }
+
+    @keyframes splashPulse {
+      0% {
+        background-size: 150% 150%;
+      }
+      50% {
+        background-size: 300% 300%;
+      }
+      100% {
+        background-size: 150% 150%;
+      }
+    }
+
+    .branding {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 1.7em;
+      color: #333;
+      letter-spacing: 0.5px;
+    }
+
+    .branding .byte {
+      font-weight: bold;
+    }
+
+    .input-bubble {
+      position: relative;
+      z-index: 2;
+    }
+
+    .input-bubble input {
+      padding: 10px 15px;
+      font-size: 1.1em;
+      border-radius: 0px;
+      outline: none;
+      background: linear-gradient(145deg, rgba(255,255,255,0.5), rgba(255,255,250,0.8));
+      transition: all 0.3s ease;
+    }
+    
+    .input-bubble input:focus {
+      box-shadow: 
+        inset 0 1px 4px rgba(255,255,255,0.9),
+        inset 0 -1px 3px rgba(200,200,200,0.6),
+        0 8px 20px rgba(0,0,0,0.2),
+        0 2px 5px rgba(0,0,0,0.1);
+      transform: scale(1.06);
+    }
+
+    /* Splash ring effect */
+    .input-bubble::before, .input-bubble::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .input-bubble::before {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(255, 200, 240, 0.5), transparent 70%);
+      animation: ringPulse1 4s ease-in-out infinite;
+    }
+
+    .input-bubble::after {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(200, 240, 255, 0.4), transparent 80%);
+      animation: ringPulse2 6s ease-in-out infinite;
+    }
+
+    @keyframes ringPulse1 {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    }
+
+    @keyframes ringPulse2 {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+    }
+
+    /* Style for the Get a key link */
+    #get-key-link {
+      color: #0070f3;
+      cursor: pointer;
+      font-size: 1em;
+      text-decoration: underline;
+      user-select: none;
+    }
+    #get-key-link:hover {
+      color: #0051a3;
+    }
   </style>
 </head>
 <body>
-  <h1>Chat with DSX (PWA)</h1>
-  <ul id="thread"></ul>
-  <input id="msg" placeholder="Type your message and hit enter" style="width: 80%;" autofocus autocomplete="off"/>
-  <button onclick="send()">Send</button>
-  <div id="keyPrompt">
-    <div id="keyPromptBox">
-      <label for="apiKeyInput">Enter your secret key to use DSX:</label><br>
-      <input type="password" id="apiKeyInput" style="width:60%;" /> 
-      <button onclick="saveKey()">Submit</button>
-      <br><br>
-      <small style="color:#888;">You can refresh to enter a different key.</small>
-    </div>
+
+  <div class="branding">
+    <span class="byte">Byte</span>theoretic
   </div>
+
+  <div class="input-bubble">
+    <input type="text" placeholder="XXXXXXXXXX" id="input-field" />
+  </div>
+
+
+  <p style="font-size: 0.9em; color: #333;">
+    Don’t have a key? <a href="#" id="get-key-link" style="color: #0070f3; text-decoration: underline;">Get one</a>
+  </p>
+  <!-- Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+
   <script>
-    // === PWA Registration ===
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-    }
+    // Replace with your actual Stripe publishable key
+    const stripe = Stripe("pk_live_51Rr0UrCqqaJR4CyTEHj8D3fJkDTv8ykImSFouhd7oc1pV1BTIPT3bNNxjfLUvEow4U38pQlv4afLEBpqANGN2J8u00Ev0O9eIf");
 
-    const API_URL = 'http://138.197.90.14:3000/api';
-    let apiKey = null;
+    document.getElementById("get-key-link").addEventListener("click", async function(e) {
+      e.preventDefault();
 
-    // Secret key handling
-    function saveKey() {
-      apiKey = document.getElementById("apiKeyInput").value.trim();
-      document.getElementById("keyPrompt").style.display = "none";
-      loadHistory();
-    }
-    // Optionally: Autofocus on secret key dialog
-    document.getElementById('apiKeyInput').focus();
+      // Optionally get the value of the input if you want to send it to backend
+      const inputValue = document.getElementById("input-field").value;
 
-    // Chat/thread logic
-    const threadEl = document.getElementById('thread');
-    const msgEl = document.getElementById('msg');
-    async function send() {
-      const msg = msgEl.value.trim();
-      if (!msg || !apiKey) return;
-      addMessage('You', msg, 'user');
-      msgEl.value = '';
+      // Call your backend to create a Checkout session
       try {
-        const res = await fetch(API_URL+'/message', {
-          method: 'POST',
+        const response = await fetch("/create-checkout-session", {
+          method: "POST",
           headers: {
-            'Content-Type':'application/json',
-            'x-api-key': apiKey
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message: msg })
+          body: JSON.stringify({ input: inputValue }) // send input if needed  
         });
-        const data = await res.json();
-        if (data.error) {
-          addMessage('Error', data.error, 'ai');
-        } else {
-          addMessage('DSX', data.response || '', 'ai');
-        }
-      } catch (e) {
-        addMessage('Error', 'Could not reach server.', 'ai');
-      }
-    }
+        const session = await response.json();
 
-    function addMessage(who, text, cls) {
-      const li = document.createElement('li');
-      li.className = cls;
-      li.innerHTML = `<span>${who}:</span> ${text}`;
-      threadEl.appendChild(li);
-      threadEl.scrollTop = threadEl.scrollHeight;
-    }
-
-    msgEl.addEventListener('keypress', e => { if (e.key === 'Enter') send(); });
-
-    // Fetch history after valid key is entered
-    async function loadHistory() {
-      try {
-        const res = await fetch(API_URL+'/history', {
-          headers: {'x-api-key': apiKey}
-        });
-        const hist = await res.json();
-        if (Array.isArray(hist) && hist.length > 0) {
-          threadEl.innerHTML = '';
-          hist.forEach(entry => {
-            if (entry.role && entry.content) {
-              const who = entry.role === 'user' ? 'You' : 'DSX';
-              addMessage(who, entry.content, entry.role === 'user' ? 'user' : 'ai');
-            }
+        if(session.id) {
+          // Redirect to Stripe Checkout
+          const result = await stripe.redirectToCheckout({
+            sessionId: session.id,
           });
+          if(result.error) {
+            alert(result.error.message);
+          }
+        } else {
+          alert("Failed to create Stripe session.");
         }
-      } catch (e) {
-        threadEl.innerHTML = '';
-        addMessage('Info', "No history found or couldn't load history.", 'ai');
+      } catch (error) {
+        alert("Error: " + error.message);
       }
-    }
+    });
   </script>
-
 
 </body>
 </html>
