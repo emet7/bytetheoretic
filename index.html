@@ -8,31 +8,51 @@
   <title>Bytetheoretic</title>
   <style>
   
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Full-screen background under everything */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, 
+              rgba(255, 240, 250, 0.9), 
+              rgba(224, 247, 255, 0.8), 
+              rgba(255, 255, 255, 0.5),
+              rgba(255, 255, 255, 0.3));
+  background-size: 250% 250%;
+  animation: splashPulse 6s ease-in-out infinite;
+  z-index: -1; /* Put it behind all content */
+}
+
+main {
+  padding-top: env(safe-area-inset-top);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
 
 /* Full viewport height, accounting for mobile safe area */
-   body::before {
-      margin: 0;
-      height: 100vh;
-      font-family: 'Helvetica', 'Arial', sans-serif;
-      background: radial-gradient(circle at center, 
-                  rgba(255, 240, 250, 0.9), 
-                  rgba(224, 247, 255, 0.8), 
-                  rgba(255, 255, 255, 0.5),
-                  rgba(255, 255, 255, 0.3));
-      background-size: 250% 250%;
-      animation: splashPulse 6s ease-in-out infinite;
-      display: flex;
-      flex-direction: column; /* stack vertically */
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      gap: 15px; /* spacing between input and link */
-    }
-    main {
-      padding-top: constant(safe-area-inset-top);
-      padding-top: env(safe-area-inset-top);
-    }
+   
     @keyframes splashPulse {
       0% {
         background-size: 150% 150%;
