@@ -7,7 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Bytetheoretic</title>
   <style>
-    body {
+  
+
+/* Full viewport height, accounting for mobile safe area */
+   body {
+      min-height: 100vh;
+      padding-top: env(safe-area-inset-top);
       margin: 0;
       height: 100vh;
       font-family: 'Helvetica', 'Arial', sans-serif;
