@@ -10,7 +10,7 @@
   
 
 /* Full viewport height, accounting for mobile safe area */
-   body {
+   body::before {
       margin: 0;
       height: 100vh;
       font-family: 'Helvetica', 'Arial', sans-serif;
@@ -30,6 +30,7 @@
       gap: 15px; /* spacing between input and link */
     }
     main {
+      padding-top: constant(safe-area-inset-top);
       padding-top: env(safe-area-inset-top);
     }
     @keyframes splashPulse {
