@@ -1,211 +1,233 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Bytetheoretic</title>
-  <style>
-  
-  html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Helvetica', 'Arial', sans-serif;
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+      <title>Bytetheoretic</title>
+      <style>
+         html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: 'Helvetica', 'Arial', sans-serif;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  position: relative;
-  overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	position: relative;
+	overflow: hidden;
 }
 
 /* Full-screen background under everything */
 body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, 
-              rgba(255, 240, 250, 0.9), 
-              rgba(224, 247, 255, 0.8), 
-              rgba(255, 255, 255, 0.5),
-              rgba(255, 255, 255, 0.3));
-  background-size: 250% 250%;
-  animation: splashPulse 6s ease-in-out infinite;
-  z-index: -1; /* Put it behind all content */
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: radial-gradient(circle at center,
+			rgba(255, 240, 250, 0.9),
+			rgba(224, 247, 255, 0.8),
+			rgba(255, 255, 255, 0.5),
+			rgba(255, 255, 255, 0.3));
+	background-size: 250% 250%;
+	animation: splashPulse 6s ease-in-out infinite;
+	z-index: -1;
+	/* Put it behind all content */
 }
 
 main {
-  padding-top: env(safe-area-inset-top);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  }
+	padding-top: env(safe-area-inset-top);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 
 /* Full viewport height, accounting for mobile safe area */
-   
-    @keyframes splashPulse {
-      0% {
-        background-size: 150% 150%;
-      }
-      50% {
-        background-size: 300% 300%;
-      }
-      100% {
-        background-size: 150% 150%;
-      }
-    }
+@keyframes splashPulse {
+	0% {
+		background-size: 150% 150%;
+	}
 
-    .branding {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 1.7em;
-      color: #333;
-      letter-spacing: 0.5px;
-    }
+	50% {
+		background-size: 300% 300%;
+	}
 
-    .branding .byte {
-      font-weight: bold;
-    }
+	100% {
+		background-size: 150% 150%;
+	}
+}
 
-    .input-bubble {
-      position: relative;
-      z-index: 2;
-    }
+.branding {
+	position: absolute;
+	top: 20px;
+	right: 30px;
+	font-size: 1.7em;
+	color: #333;
+	letter-spacing: 0.5px;
+}
 
-    .input-bubble input {
-      padding: 10px 15px;
-      font-size: 1.1em;
-      border-radius: 0px;
-      outline: none;
-      background: linear-gradient(145deg, rgba(255,255,255,0.5), rgba(255,255,250,0.8));
-      transition: all 0.3s ease;
-    }
-    
-    .input-bubble input:focus {
-      box-shadow: 
-        inset 0 1px 4px rgba(255,255,255,0.9),
-        inset 0 -1px 3px rgba(200,200,200,0.6),
-        0 8px 20px rgba(0,0,0,0.2),
-        0 2px 5px rgba(0,0,0,0.1);
-      transform: scale(1.06);
-    }
+.branding .byte {
+	font-weight: bold;
+}
 
-    /* Splash ring effect */
-    .input-bubble::before, .input-bubble::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      z-index: 1;
-      pointer-events: none;
-    }
+.input-bubble {
+	position: relative;
+	z-index: 2;
+}
 
-    .input-bubble::before {
-      width: 250px;
-      height: 250px;
-      background: radial-gradient(circle, rgba(255, 200, 240, 0.5), transparent 70%);
-      animation: ringPulse1 4s ease-in-out infinite;
-    }
+.input-bubble input {
+	padding: 10px 15px;
+	font-size: 1.1em;
+	border-radius: 0px;
+	outline: none;
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 250, 0.8));
+	transition: all 0.3s ease;
+}
 
-    .input-bubble::after {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(200, 240, 255, 0.4), transparent 80%);
-      animation: ringPulse2 6s ease-in-out infinite;
-    }
+.input-bubble input:focus {
+	box-shadow:
+		inset 0 1px 4px rgba(255, 255, 255, 0.9),
+		inset 0 -1px 3px rgba(200, 200, 200, 0.6),
+		0 8px 20px rgba(0, 0, 0, 0.2),
+		0 2px 5px rgba(0, 0, 0, 0.1);
+	transform: scale(1.06);
+}
 
-    @keyframes ringPulse1 {
-      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
-      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
-    }
+/* Splash ring effect */
+.input-bubble::before,
+.input-bubble::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	z-index: 1;
+	pointer-events: none;
+}
 
-    @keyframes ringPulse2 {
-      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
-      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.6; }
-      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
-    }
+.input-bubble::before {
+	width: 250px;
+	height: 250px;
+	background: radial-gradient(circle, rgba(255, 200, 240, 0.5), transparent 70%);
+	animation: ringPulse1 4s ease-in-out infinite;
+}
 
-    /* Style for the Get a key link */
-    #get-key-link {
-      color: #0070f3;
-      cursor: pointer;
-      font-size: 1em;
-      text-decoration: underline;
-      user-select: none;
-    }
-    #get-key-link:hover {
-      color: #0051a3;
-    }
-  </style>
-</head>
-<body>
-  <main>
-  <div class="branding">
-    <span class="byte">Byte</span>theoretic
-  </div>
+.input-bubble::after {
+	width: 400px;
+	height: 400px;
+	background: radial-gradient(circle, rgba(200, 240, 255, 0.4), transparent 80%);
+	animation: ringPulse2 6s ease-in-out infinite;
+}
 
-  <div class="input-bubble">
-    <input type="text" placeholder="XXXXXXXXXX" id="input-field" />
-  </div>
+@keyframes ringPulse1 {
+	0% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0.6;
+	}
 
+	50% {
+		transform: translate(-50%, -50%) scale(1.2);
+		opacity: 0.8;
+	}
 
-  <p style="font-size: 0.9em; color: #333;">
-    Don’t have a key? <a href="#" id="get-key-link" style="color: #0070f3; text-decoration: underline;">Get one</a>
-  </p>
-  <!-- Stripe.js -->
-  <script src="https://js.stripe.com/v3/"></script>
+	100% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0.6;
+	}
+}
 
-  <script>
-    // Replace with your actual Stripe publishable key
-    const stripe = Stripe("pk_live_51Rr0UrCqqaJR4CyTEHj8D3fJkDTv8ykImSFouhd7oc1pV1BTIPT3bNNxjfLUvEow4U38pQlv4afLEBpqANGN2J8u00Ev0O9eIf");
+@keyframes ringPulse2 {
+	0% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0.4;
+	}
 
-    document.getElementById("get-key-link").addEventListener("click", async function(e) {
-      e.preventDefault();
+	50% {
+		transform: translate(-50%, -50%) scale(1.3);
+		opacity: 0.6;
+	}
 
-      // Optionally get the value of the input if you want to send it to backend
-      const inputValue = document.getElementById("input-field").value;
+	100% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 0.4;
+	}
+}
 
-      // Call your backend to create a Checkout session
-      try {
-        const response = await fetch("https://api.bytetheoretic.com/create-checkout-session", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ input: inputValue }) // send input if needed  
-        });
-        const session = await response.json();
+/* Style for the Get a key link */
+#get-key-link {
+	color: #0070f3;
+	cursor: pointer;
+	font-size: 1em;
+	text-decoration: underline;
+	user-select: none;
+}
 
-        if(session.id) {
-          // Redirect to Stripe Checkout
-          const result = await stripe.redirectToCheckout({
-            sessionId: session.id,
-          });
-          if(result.error) {
-            alert(result.error.message);
-          }
-        } else {
-          alert("Failed to create Stripe session.");
-        }
-      } catch (error) {
-        alert("Error: " + error.message);
-      }
-    });
-  </script>
-  </main>
-</body>
+#get-key-link:hover {
+	color: #0051a3;
+}
+      </style>
+   </head>
+   <body>
+      <main>
+         <div class="branding">
+            <span class="byte">Byte</span>theoretic
+         </div>
+         <div class="input-bubble">
+            <input type="text" placeholder="XXXXXXXXXX" id="input-field" />
+         </div>
+         <p style="font-size: 0.9em; color: #333;">
+            Don’t have a key? <a href="#" id="get-key-link" style="color: #0070f3; text-decoration: underline;">Get one</a>
+         </p>
+         <!-- Stripe.js -->
+         <script src="https://js.stripe.com/v3/"></script>
+         <script>
+            // Replace with your actual Stripe publishable key
+            const stripe = Stripe("pk_live_51Rr0UrCqqaJR4CyTEHj8D3fJkDTv8ykImSFouhd7oc1pV1BTIPT3bNNxjfLUvEow4U38pQlv4afLEBpqANGN2J8u00Ev0O9eIf");
+            
+            document.getElementById("get-key-link").addEventListener("click", async function(e) {
+              e.preventDefault();
+            
+              // Optionally get the value of the input if you want to send it to backend
+              const inputValue = document.getElementById("input-field").value;
+            
+              // Call your backend to create a Checkout session
+              try {
+                const response = await fetch("https://api.bytetheoretic.com/create-checkout-session", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({ input: inputValue }) // send input if needed  
+                });
+                const session = await response.json();
+            
+                if(session.id) {
+                  // Redirect to Stripe Checkout
+                  const result = await stripe.redirectToCheckout({
+                    sessionId: session.id,
+                  });
+                  if(result.error) {
+                    alert(result.error.message);
+                  }
+                } else {
+                  alert("Failed to create Stripe session.");
+                }
+              } catch (error) {
+                alert("Error: " + error.message);
+              }
+            });
+         </script>
+      </main>
+   </body>
 </html>
